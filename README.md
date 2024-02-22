@@ -111,6 +111,30 @@ $clone = $dto->clone(['key' => 'test2']);
 var_dump($dto->toArray()); // (array) ["key" => "test2", "value" => "value1"]
 ```
 
+## Laravel Eloquent Model Casts
+Laravel AsDto casts
+
+```php
+<?php
+declare(strict_types=1);
+namespace App/Models;
+
+use LeMaX10\DtoHelpers\Casts\AsDto;
+use ExampleDto;
+ 
+class ExampleModel extends Model 
+{
+    ....
+    public $casts = [
+        'dto' => AsDto::class .':'. ExampleDto::class,
+    ];
+}
+
+$model = ExampleModel::find(1);
+var_dump($model->dto); // (object) ExampleDto
+```
+
+
 ## Other examples
 
 ```php
