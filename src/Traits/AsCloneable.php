@@ -8,7 +8,7 @@ use LeMaX10\DtoHelpers\Exceptions\ClassNotImplementInterfaceException;
 
 trait AsCloneable
 {
-    public function clone(array $arguments): static
+    public function clone(...$arguments): static
     {
         if (!$this instanceof Arrayable) {
             throw new ClassNotImplementInterfaceException(static::class, Arrayable::class);
