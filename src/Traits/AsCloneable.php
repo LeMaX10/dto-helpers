@@ -6,7 +6,7 @@ namespace LeMaX10\DtoHelpers\Traits;
 use Illuminate\Contracts\Support\Arrayable;
 use LeMaX10\DtoHelpers\Exceptions\ClassNotImplementInterfaceException;
 
-trait DtoClonable
+trait AsCloneable
 {
     public function clone(array $arguments): static
     {
