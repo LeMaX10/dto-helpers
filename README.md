@@ -26,7 +26,7 @@ Converts your DTO to an array.
 use LeMaX10\DtoHelpers\Traits\AsArray;
 use Illuminate\Contracts\Support\Arrayable;
 
-class ExampleArrayableDTO implements Arrayable
+class MyData implements Arrayable
 {
     use AsArray;
 
@@ -36,7 +36,7 @@ class ExampleArrayableDTO implements Arrayable
     ) {}
 }
 
-$dto = new ExampleArrayableDTO(key: 'test1', value: 'value1');
+$dto = new MyData(key: 'test1', value: 'value1');
 
 dump($dto->toArray());
 // Output: ['key' => 'test1', 'value' => 'value1']
@@ -53,17 +53,13 @@ Converts your DTO to a JSON string.
 use LeMaX10\DtoHelpers\Traits\AsJson;
 use Illuminate\Contracts\Support\Jsonable;
 
-class ExampleJsonableDTO implements Jsonable
+class MyData implements Jsonable
 {
     use AsJson;
-
-    public function __construct(
-        public string $key,
-        public string $value
-    ) {}
+    // ...
 }
 
-$dto = new ExampleJsonableDTO(key: 'test1', value: 'value1');
+$dto = new MyData(key: 'test1', value: 'value1');
 
 dump($dto->toJson());
 // Output: '{"key":"test1","value":"value1"}'
@@ -80,17 +76,14 @@ Enables JSON serialization with `json_encode()`.
 use LeMaX10\DtoHelpers\Traits\AsJsonSerialize;
 use JsonSerializable;
 
-class ExampleJsonSerializeDTO implements JsonSerializable
+class MyData implements JsonSerializable
 {
     use AsJsonSerialize;
 
-    public function __construct(
-        public string $key,
-        public string $value
-    ) {}
+    // ...
 }
 
-$dto = new ExampleJsonSerializeDTO(key: 'test1', value: 'value1');
+$dto = new MyData(key: 'test1', value: 'value1');
 
 dump(json_encode($dto));
 // Output: '{"key":"test1","value":"value1"}'
@@ -108,17 +101,14 @@ use LeMaX10\DtoHelpers\Traits\AsArray;
 use LeMaX10\DtoHelpers\Traits\AsCloneable;
 use Illuminate\Contracts\Support\Arrayable;
 
-class ExampleCloneableDTO implements Arrayable
+class MyData implements Arrayable
 {
     use AsArray, AsCloneable;
 
-    public function __construct(
-        public string $key,
-        public string $value
-    ) {}
+    // ...
 }
 
-$dto = new ExampleCloneableDTO(key: 'test1', value: 'value1');
+$dto = new MyData(key: 'test1', value: 'value1');
 
 dump($dto->toArray());
 // Output: ['key' => 'test1', 'value' => 'value1']
@@ -137,18 +127,17 @@ Use your DTO as a custom cast in an Eloquent model.
 
 ```php
 use LeMaX10\DtoHelpers\Casts\AsDto;
-use Example\Dtos\ExampleDto;
 use Illuminate\Database\Eloquent\Model;
 
 class ExampleModel extends Model
 {
     protected $casts = [
-        'dto' => AsDto::class . ':' . ExampleDto::class,
+        'dto' => AsDto::class . ':' . MyData::class,
     ];
 }
 
 $model = ExampleModel::find(1);
 
 dump($model->dto);
-// Output: instance of ExampleDto
+// Output: instance of MyData
 ```
