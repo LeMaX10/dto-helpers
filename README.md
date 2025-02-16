@@ -19,9 +19,8 @@ composer require lemax10/dto-helpers
 
 ### AsArray
 
-Converts your DTO into an array.
-
-**Requirement:** Your DTO class must implement the `Illuminate\Contracts\Support\Arrayable` interface.
+Converts your DTO to an array.  
+*Requires:* Implements `Illuminate\Contracts\Support\Arrayable`.
 
 ```php
 use LeMaX10\DtoHelpers\Traits\AsArray;
@@ -40,14 +39,15 @@ class ExampleArrayableDTO implements Arrayable
 $dto = new ExampleArrayableDTO(key: 'test1', value: 'value1');
 
 dump($dto->toArray());
-// Output: array('key' => 'test1', 'value' => 'value1')
+// Output: ['key' => 'test1', 'value' => 'value1']
 ```
+
+---
 
 ### AsJson
 
-Converts your DTO into a JSON string.
-
-**Requirement:** Your DTO class must implement the `Illuminate\Contracts\Support\Jsonable` interface.
+Converts your DTO to a JSON string.  
+*Requires:* Implements `Illuminate\Contracts\Support\Jsonable`.
 
 ```php
 use LeMaX10\DtoHelpers\Traits\AsJson;
@@ -66,14 +66,15 @@ class ExampleJsonableDTO implements Jsonable
 $dto = new ExampleJsonableDTO(key: 'test1', value: 'value1');
 
 dump($dto->toJson());
-// Output: string '{"key":"test1","value":"value1"}'
+// Output: '{"key":"test1","value":"value1"}'
 ```
+
+---
 
 ### AsJsonSerialize
 
-Enables JSON serialization using `json_encode()`.
-
-**Requirement:** Your DTO class must implement the `JsonSerializable` interface.
+Enables JSON serialization with `json_encode()`.  
+*Requires:* Implements `JsonSerializable`.
 
 ```php
 use LeMaX10\DtoHelpers\Traits\AsJsonSerialize;
@@ -92,14 +93,15 @@ class ExampleJsonSerializeDTO implements JsonSerializable
 $dto = new ExampleJsonSerializeDTO(key: 'test1', value: 'value1');
 
 dump(json_encode($dto));
-// Output: string '{"key":"test1","value":"value1"}'
+// Output: '{"key":"test1","value":"value1"}'
 ```
+
+---
 
 ### AsCloneable
 
-Clones a DTO instance while allowing you to override specific properties.
-
-**Requirement:** The DTO class should implement a compatible interface (for example, `Illuminate\Contracts\Support\Arrayable`) to work correctly with the cloning functionality.
+Clones a DTO while allowing property overrides.  
+*Requires:* A compatible interface (e.g., `Illuminate\Contracts\Support\Arrayable`).
 
 ```php
 use LeMaX10\DtoHelpers\Traits\AsArray;
@@ -119,13 +121,15 @@ class ExampleCloneableDTO implements Arrayable
 $dto = new ExampleCloneableDTO(key: 'test1', value: 'value1');
 
 dump($dto->toArray());
-// Output: array('key' => 'test1', 'value' => 'value1')
+// Output: ['key' => 'test1', 'value' => 'value1']
 
 $clone = $dto->clone(['key' => 'test2']);
 
 dump($clone->toArray());
-// Output: array('key' => 'test2', 'value' => 'value1')
+// Output: ['key' => 'test2', 'value' => 'value1']
 ```
+
+---
 
 ### Eloquent Model Casts
 
@@ -138,7 +142,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ExampleModel extends Model
 {
-    // ...
     protected $casts = [
         'dto' => AsDto::class . ':' . ExampleDto::class,
     ];
