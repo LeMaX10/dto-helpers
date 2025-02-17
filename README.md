@@ -141,3 +141,11 @@ $model = ExampleModel::find(1);
 dump($model->dto);
 // Output: instance of MyData
 ```
+
+## Contributing
+
+Thank you for considering contributing to the DTO Helpers package! 
+
+## License
+
+The DTO Helpers package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -1,9 +1,8 @@
 {
     "name": "lemax10/dto-helpers",
-    "description": "DTO Helpers",
+    "description": "Laravel DTO Helpers",
     "keywords": ["php", "laravel", "dto", "helpers"],
     "homepage": "https://pyankov.pro",
-    "type": "project",
     "license": "MIT",
     "authors": [
         {
