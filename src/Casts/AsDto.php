@@ -7,7 +7,7 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Casts\Json;
 
-abstract class AsDto implements Castable
+class AsDto implements Castable
 {
     public static function castUsing(array $arguments)
     {
@@ -38,17 +38,22 @@ abstract class AsDto implements Castable
 
             public function set($model, $key, $value, $attributes)
             {
-               if ($value === null) {
-                   return null;
-               }
+                if ($value === null) {
+                    return null;
+                }
 
-               $dtoClass = $this->arguments[0];
-               if (!$value instanceof $dtoClass) {
-                   throw new \Exception("The provided value must be an instance of " . $dtoClass);
-               }
+                $dtoClass = $this->arguments[0];
+                if (!$value instanceof $dtoClass) {
+                    throw new \Exception("The provided value must be an instance of " . $dtoClass);
+                }
 
                 return Json::encode($value->toArray());
             }
         };
+    }
+
+    public static function cast(string $className): string
+    {
+        return static::class .':'. $className;
     }
 }

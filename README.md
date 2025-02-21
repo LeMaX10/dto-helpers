@@ -134,6 +134,15 @@ class ExampleModel extends Model
     protected $casts = [
         'dto' => AsDto::class . ':' . MyData::class,
     ];
+    
+    // OR
+    
+    public function casts()
+    {
+        return [
+           'dto' => AsDto::cast(MyData::class),
+        ];
+    }
 }
 
 $model = ExampleModel::find(1);
