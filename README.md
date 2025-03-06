@@ -6,7 +6,9 @@ This package offers a set of traits to simplify working with DTOs (Data Transfer
 - Transform a DTO into a JSON string via the `AsJson` trait.
 - Seamlessly serialize a DTO with `json_encode()` using the `AsJsonSerialize` trait.
 - Clone a DTO with modified properties through the `AsCloneable` trait.
+- Make a DTO with static method `make()`, using `AsMake` trait
 - Use DTOs as custom casts in Eloquent models.
+- Use Array helpers `only()` or `except()` from DTO with using `AsArray` trait.
 
 ## Installation
 
@@ -40,6 +42,12 @@ $dto = new MyData(key: 'test1', value: 'value1');
 
 dump($dto->toArray());
 // Output: ['key' => 'test1', 'value' => 'value1']
+
+dump($dto->only('key'));
+// Output: ['key' => 'test1']
+
+dump($dto->except('key'));
+// Output: ['value' => 'value1']
 ```
 
 ---
@@ -70,23 +78,23 @@ dump($dto->toJson());
 ### AsJsonSerialize
 
 Enables JSON serialization with `json_encode()`.  
-*Requires:* Implements `JsonSerializable`.
+*Requires:* Implements `LeMaX10\DtoHelpers\Contracts\Makeable`.
 
 ```php
-use LeMaX10\DtoHelpers\Traits\AsJsonSerialize;
+use LeMaX10\DtoHelpers\Contracts\Makeable;
 use JsonSerializable;
 
-class MyData implements JsonSerializable
+class MyData implements Makeable
 {
-    use AsJsonSerialize;
+    use AsMake;
 
     // ...
 }
 
-$dto = new MyData(key: 'test1', value: 'value1');
+$dto = MyData::make(key: 'test1', value: 'value1');
 
-dump(json_encode($dto));
-// Output: '{"key":"test1","value":"value1"}'
+dump($dto);
+// Output: instance of MyData
 ```
 
 ---
@@ -94,7 +102,7 @@ dump(json_encode($dto));
 ### AsCloneable
 
 Clones a DTO while allowing property overrides.  
-*Requires:* A compatible interface (e.g., `Illuminate\Contracts\Support\Arrayable`).
+*Requires:* A compatible interface (e.g., `Illuminate\Contracts\Support\Arrayable`) and implements `LeMaX10\DtoHelpers\Contracts\Cloneable`
 
 ```php
 use LeMaX10\DtoHelpers\Traits\AsArray;
@@ -117,6 +125,29 @@ $clone = $dto->clone(['key' => 'test2']);
 
 dump($clone->toArray());
 // Output: ['key' => 'test2', 'value' => 'value1']
+```
+
+---
+
+### AsMake
+
+Converts your DTO to a JSON string.  
+*Requires:* Implements `Illuminate\Contracts\Support\Jsonable`.
+
+```php
+use LeMaX10\DtoHelpers\Traits\AsJson;
+use Illuminate\Contracts\Support\Jsonable;
+
+class MyData implements Jsonable
+{
+    use AsJson;
+    // ...
+}
+
+$dto = new MyData(key: 'test1', value: 'value1');
+
+dump($dto->toJson());
+// Output: '{"key":"test1","value":"value1"}'
 ```
 
 ---

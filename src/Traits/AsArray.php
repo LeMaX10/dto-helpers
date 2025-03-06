@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace LeMaX10\DtoHelpers\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
 use LeMaX10\DtoHelpers\Exceptions\ClassNotImplementInterfaceException;
 
+/**
+ *
+ */
 trait AsArray
 {
     /**
@@ -23,5 +27,25 @@ trait AsArray
         }
 
         return $item;
+    }
+
+    /**
+     * @param array|string $keys
+     * @return array
+     * @throws ClassNotImplementInterfaceException
+     */
+    public function only(array|string $keys): array
+    {
+        return Arr::only($this->toArray(), $keys);
+    }
+
+    /**
+     * @param array|string $keys
+     * @return array
+     * @throws ClassNotImplementInterfaceException
+     */
+    public function except(array|string $keys): array
+    {
+        return Arr::except($this->toArray(), $keys);
     }
 }
