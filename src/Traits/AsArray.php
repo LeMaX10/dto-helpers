@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace LeMaX10\DtoHelpers\Traits;
 
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 use LeMaX10\DtoHelpers\Exceptions\ClassNotImplementInterfaceException;
 
 /**
@@ -23,7 +25,13 @@ trait AsArray
 
         $item = [];
         foreach (get_object_vars($this) as $key => $value) {
-            $item[$key] = $value instanceof Arrayable ? $value->toArray() : $value;
+            $item[$key] = match(true) {
+                $value instanceof Arrayable, $value instanceof Collection => $value->toArray(),
+                $value instanceof \BackedEnum => $value->value,
+                $value instanceof \UnitEnum => $value->name,
+                $value instanceof Jsonable => $value->toJson(),
+                default => $value
+            };
         }
 
         return $item;
