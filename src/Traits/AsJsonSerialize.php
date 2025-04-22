@@ -9,11 +9,11 @@ trait AsJsonSerialize
 {
     public function jsonSerialize()
     {
-        if (!$this instanceof \JsonSerializable) {
+        if (!is_a($this, \JsonSerializable::class)) {
             throw new ClassNotImplementInterfaceException(static::class, \JsonSerializable::class);
         }
 
-        if ($this instanceof Arrayable) {
+        if (is_a($this, Arrayable::class)) {
             return $this->toArray();
         }
 

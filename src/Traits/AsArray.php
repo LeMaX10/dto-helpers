@@ -19,19 +19,13 @@ trait AsArray
      */
     public function toArray()
     {
-        if (!$this instanceof Arrayable) {
+        if (!is_a($this, Arrayable::class)) {
             throw new ClassNotImplementInterfaceException(static::class, Arrayable::class);
         }
 
         $item = [];
         foreach (get_object_vars($this) as $key => $value) {
-            $item[$key] = match(true) {
-                $value instanceof Arrayable, $value instanceof Collection => $value->toArray(),
-                $value instanceof \BackedEnum => $value->value,
-                $value instanceof \UnitEnum => $value->name,
-                $value instanceof Jsonable => $value->toJson(),
-                default => $value
-            };
+            $item[$key] = is_a($value, Arrayable::class) ? $value->toArray() : $value;
         }
 
         return $item;

@@ -10,7 +10,7 @@ trait AsJson
 {
     public function toJson($options = 0): string
     {
-        if ($this instanceof Jsonable) {
+        if (!is_a($this, Jsonable::class)) {
             throw new ClassNotImplementInterfaceException(static::class, Jsonable::class);
         }
 
