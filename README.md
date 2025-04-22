@@ -73,9 +73,32 @@ dump($dto->toJson());
 // Output: '{"key":"test1","value":"value1"}'
 ```
 
----
+--- 
 
 ### AsJsonSerialize
+
+Enables JSON serialization with `json_encode()`.  
+*Requires:* Implements `JsonSerializable`.
+
+```php
+use LeMaX10\DtoHelpers\Contracts\Makeable;
+use JsonSerializable;
+
+class MyData implements JsonSerializable
+{
+    use AsJsonSerialize;
+
+    // ...
+}
+
+$dto = MyData::make(key: 'test1', value: 'value1');
+dump(json_encode($dto));
+// Output: {"key":"test1","value":"value1"}
+```
+
+---
+
+### AsMake
 
 Enables JSON serialization with `json_encode()`.  
 *Requires:* Implements `LeMaX10\DtoHelpers\Contracts\Makeable`.
@@ -91,10 +114,27 @@ class MyData implements Makeable
     // ...
 }
 
-$dto = MyData::make(key: 'test1', value: 'value1');
+class MyDataCustomMake implements Makeable
+{
+    // ...
+    public static function make(...$arguments): static
+    {
+        // Example so-so
+        if (Arr::get($arguments, 'key') === 1) {
+            $arguments['value'] = 'valueExample';
+        }
+        
+        return new static(...$arguments);
+    }
+}
 
+$dto = MyData::make(key: 'test1', value: 'value1');
 dump($dto);
 // Output: instance of MyData
+
+$dtoCustom = MyDataCustomMake::make(key: 1, value: 'value1');
+dump($dto);
+// Output: instance of MyDataCustomMake and value equals "valueExample"
 ```
 
 ---
@@ -102,16 +142,16 @@ dump($dto);
 ### AsCloneable
 
 Clones a DTO while allowing property overrides.  
-*Requires:* A compatible interface (e.g., `Illuminate\Contracts\Support\Arrayable`) and implements `LeMaX10\DtoHelpers\Contracts\Cloneable`
+*Requires:* Implements `LeMaX10\DtoHelpers\Contracts\Cloneable`
 
 ```php
 use LeMaX10\DtoHelpers\Traits\AsArray;
 use LeMaX10\DtoHelpers\Traits\AsCloneable;
-use Illuminate\Contracts\Support\Arrayable;
+use LeMaX10\DtoHelpers\Contracts\Cloneable;
 
-class MyData implements Arrayable
+class MyData implements Cloneable
 {
-    use AsArray, AsCloneable;
+    use AsCloneable;
 
     // ...
 }
