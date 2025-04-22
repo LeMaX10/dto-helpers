@@ -148,10 +148,11 @@ Clones a DTO while allowing property overrides.
 use LeMaX10\DtoHelpers\Traits\AsArray;
 use LeMaX10\DtoHelpers\Traits\AsCloneable;
 use LeMaX10\DtoHelpers\Contracts\Cloneable;
+use Illuminate\Contracts\Support\Arrayable;
 
-class MyData implements Cloneable
+class MyData implements Cloneable, Arrayable
 {
-    use AsCloneable;
+    use AsCloneable, AsArray;
 
     // ...
 }
